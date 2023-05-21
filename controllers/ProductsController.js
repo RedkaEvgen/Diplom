@@ -3,12 +3,11 @@ import ProductModel from '../models/Product.js';
 export const getAll = async (req,res) => {
     try{
         const product = await ProductModel.find().populate('user').exec();
-
         res.json(product);
     }catch (err){
         console.log(err);
         res.status(500).json({
-         message:'Не удалось получить статьи',
+         message:'Не вдалось знайти жодного продукту.',
       });
 
     }
@@ -17,7 +16,7 @@ export const getAll = async (req,res) => {
 export const getOne = async (req,res) => {
     try{
         const productId = req.params.id;
-        
+
         const product = await ProductModel.findOneAndUpdate(
         {
             _id: productId,
@@ -28,20 +27,20 @@ export const getOne = async (req,res) => {
         {
             returnDocument: 'after',
         },
-        
-     );  
+
+     );
      if (!product){
         return res.status(404).json({
-            message:'Статья не найдена',
+            message:'Продукт не знайдений',
         });
-    } 
-    
+    }
+
     res.json(product);
 
     }catch (err){
         console.log(err);
         res.status(500).json({
-         message:'Не удалось получить статьи',
+         message:'Не удалось получить продукт',
       });
 
     }
@@ -59,11 +58,11 @@ export const create = async (req, res)=>{
         const product = await doc.save();
 
         res.json(product);
-    
+
     }catch (err){
         console.log(err);
         res.status(500).json({
-         message:'Не удалось создать статью',
+         message:'Не удалось створити продукт',
       });
     }
 };
@@ -71,10 +70,10 @@ export const remove = async (req, res) => {
     try {
         const productId = req.params.id;
 
-        
+
         const result = await ProductModel.findOneAndDelete(
             {
-            _id: productId , 
+            _id: productId ,
             },
         );
 
@@ -82,23 +81,23 @@ export const remove = async (req, res) => {
             success: true,
         });
 
-        
+
     }catch (err){
         console.log(err);
         res.status(500).json({
-         message:'Не удалось удалить статью ',
+         message:'Не вдалось видалити продукт',
         });
     }
-    
+
 };
 export const update = async (req, res) => {
     try {
         const productId = req.params.id;
 
-        
+
         const result = await ProductModel.findOneAndUpdate(
             {
-            _id: productId , 
+            _id: productId ,
             },
             {
                 title: req.body.title,
@@ -113,12 +112,12 @@ export const update = async (req, res) => {
             success: true,
         });
 
-        
+
     }catch (err){
         console.log(err);
         res.status(500).json({
-         message:'Не удалось обновить статью ',
+         message:'Не вдалось обновити продукт',
         });
     }
-    
+
 };
