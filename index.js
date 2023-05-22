@@ -27,8 +27,9 @@ app.post('/auth/login',loginValidation, UserController.login);
 app.post('/auth/register',registerValidation,UserController.register);
 app.get('/auth/me', checkAuth, UserController.getMe);
 
-app.get('/products', ProductsController.getAll);
-app.get('/products/:id', ProductsController.getOne);
+app.get('/products', ProductsController.getAll); // For All Product
+app.get('/products/:id', ProductsController.getOne); // For One product
+// For admin
 app.post('/products', checkAuth , productCreateValidation, ProductsController.create);
 app.delete('/products/:id', checkAuth , ProductsController.remove);
 app.patch('/products/:id', ProductsController.update);
