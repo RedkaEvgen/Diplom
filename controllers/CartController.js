@@ -2,22 +2,24 @@ import UserModel from '../models/User.js';
 
 
 export const add = async (req , res ) => {
+ // TODO: add several prducts
+
  try {
     const userId = req.userId;
     const cart = req.body ;
-    
+
     const result = await UserModel.findOneAndUpdate(
         {
             _id: userId
         },
         {
             '$push': {
-                cart   
+                cart
             }
-        } 
+        }
     )
-   res.status(200).json(result) 
-   
+   res.status(200).json(result)
+
  }
   catch(err) {
     console.log(err);
@@ -30,7 +32,7 @@ export const update = async (req , res ) => {
     try {
         const userId = req.userId;
         const cart = req.body;
-        
+
         const result = await UserModel.findOneAndUpdate(
             {
                 _id: userId,
@@ -41,10 +43,10 @@ export const update = async (req , res ) => {
                     "cart.productId": cart.productId,
                     "cart.count": cart.count,
                 }
-            } 
+            }
         )
-       res.status(200).json(result) 
-       
+       res.status(200).json(result)
+
      }
       catch(err) {
         console.log(err);
@@ -57,7 +59,7 @@ export const remove = async (req , res ) => {
     try {
         const userId = req.userId;
         const cart = req.body;
-        
+
         const result = await UserModel.findOneAndUpdate(
             {
                 _id: userId,
@@ -66,13 +68,13 @@ export const remove = async (req , res ) => {
            {
             $pull:{
                 cart:{
-                    productId:cart.productId 
+                    productId:cart.productId
                 }
-            } 
+            }
            }
         )
-       res.status(200).json(result) 
-       
+       res.status(200).json(result)
+
      }
       catch(err) {
         console.log(err);

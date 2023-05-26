@@ -9,7 +9,6 @@ const ProductSchema = new mongoose.Schema(
     text:{
         type:String,
         required:true,
-        unique:true,
     },
     tags:{
         type:Array,
@@ -19,14 +18,9 @@ const ProductSchema = new mongoose.Schema(
         type:Number,
         default:0,
     },
-    user:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref:'User',
-        required: true,
-    },
     price:{
         type:Number,
-        default:0,
+        required: true
     },
 
     imageUrl: String,

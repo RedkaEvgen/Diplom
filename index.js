@@ -1,9 +1,15 @@
 import express from "express";
 import multer from "multer";
 
+import * as fs from "fs";
+import* as  https from "https";
+
+
 
 import cors from "cors";
 import mongoose from 'mongoose';
+const key = fs.readFileSync('./key.pem');
+const cert = fs.readFileSync('./cert.pem');
 
 import { registerValidation, loginValidation, productCreateValidation} from './validations.js';
 
@@ -21,10 +27,22 @@ mongoose.connect('mongodb+srv://root:root@cluster0.ctmgvju.mongodb.net/?retryWri
 const app =express();
 
 const storage = multer.diskStorage({
-    destination: (_,__, cb)=>{
-        cb(null,'uploads');
+    destination: (req,file, cb)=> {
+        const body = String(req.body.data);
+        req.body = JSON.parse(body);
+
+        if(!req.body?.imageUrl || req.body?.imageUrl !== `http:localhost:${PORT}/uploads/${file.originalname}`) {
+            cb(null,'uploads/products');
+        }
     },
-    filename:(_, file,cb)=>{
+    filename:(req, file,cb)=> {
+        const body = String(req.body.data);
+        req.body = JSON.parse(body);
+
+        if(req.body?.imageUrl !== `http:localhost:${PORT}/uploads/${file.originalname}`) {
+            req.body.imageUrl = `http:localhost:${PORT}/uploads/products/${file.originalname}`
+        }
+
         cb(null,file.originalname);
     }
 });
@@ -34,6 +52,8 @@ const upload = multer({ storage });
 app.use(cors())
 
 app.use(express.json());
+const server = https.createServer({key: key, cert: cert }, app);
+
 app.use('/uploads', express.static('uploads'));
 
 
@@ -45,14 +65,14 @@ app.post('/upload',upload.single('image'),(req,res)=>{
     res.json({
         url: `/uploads/${req.file.originalname}`,
     });
-}) 
+})
 
 app.get('/products', ProductsController.getAll); // For All Product
 app.get('/products/:id', ProductsController.getOne); // For One product
 // For admin
-app.post('/products', checkAuth ,upload.single('image') , productCreateValidation, ProductsController.create);
+app.post('/products' , upload.any(), productCreateValidation,  ProductsController.create);
 app.delete('/products/:id', checkAuth , ProductsController.remove);
-app.patch('/products/:id', ProductsController.update);
+app.patch('/products/:id', upload.any(), ProductsController.update);
 
 app.patch('/user/cart', checkAuth, CartController.add);
 app.delete('/user/cart', checkAuth, CartController.remove);

@@ -2,7 +2,7 @@ import ProductModel from '../models/Product.js';
 
 export const getAll = async (req,res) => {
     try{
-        const product = await ProductModel.find().populate('user').exec();
+        const product = await ProductModel.find().exec();
         res.json(product);
     }catch (err){
         console.log(err);
@@ -46,19 +46,17 @@ export const getOne = async (req,res) => {
     }
 };
 export const create = async (req, res)=>{
+
     try{
         const doc = new ProductModel({
            title: req.body.title,
-           text: req.body.title,
+           text: req.body.text,
            imageUrl: req.body.imageUrl,
            tags: req.body.tags,
-           user: req.userId,
         });
 
         const product = await doc.save();
-
         res.json(product);
-
     }catch (err){
         console.log(err);
         res.status(500).json({
@@ -79,6 +77,7 @@ export const remove = async (req, res) => {
 
         res.json({
             success: true,
+            data: result
         });
 
 
@@ -93,8 +92,6 @@ export const remove = async (req, res) => {
 export const update = async (req, res) => {
     try {
         const productId = req.params.id;
-
-
         const result = await ProductModel.findOneAndUpdate(
             {
             _id: productId ,
@@ -103,13 +100,13 @@ export const update = async (req, res) => {
                 title: req.body.title,
                 text: req.body.text,
                 imageUrl: req.body.imageUrl,
-                user: req.userId,
                 tags: req.body.tags,
             },
         );
 
         res.json({
             success: true,
+            data: result,
         });
 
 

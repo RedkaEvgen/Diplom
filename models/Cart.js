@@ -4,14 +4,13 @@ const CartSchema = new mongoose.Schema({
     productId : {
         type: mongoose.Schema.Types.ObjectId,
         ref:'Product',
-        required: true,  
+        required: true,
     },
     count: {
         type:Number,
         required: true,
     }
-    
-    },   
+    },
     {
     timestamps:true,
  },
