@@ -26,7 +26,7 @@ const storage = multer.diskStorage({
         const body = String(req.body.data);
         req.body = JSON.parse(body);
 
-        if(!req.body?.imageUrl || req.body?.imageUrl !== `http:localhost:${PORT}/uploads/${file.originalname}`) {
+        if(!req.body?.imageUrl || req.body?.imageUrl !== `http://localhost:${PORT}/uploads/products/${file.originalname}`) {
             cb(null,'uploads/products');
         }
     },
@@ -34,8 +34,8 @@ const storage = multer.diskStorage({
         const body = String(req.body.data);
         req.body = JSON.parse(body);
 
-        if(req.body?.imageUrl !== `http:localhost:${PORT}/uploads/${file.originalname}`) {
-            req.body.imageUrl = `http:localhost:${PORT}/uploads/products/${file.originalname}`
+        if(req.body?.imageUrl !== `http://localhost:${PORT}/uploads/products/${file.originalname}`) {
+            req.body.imageUrl = `http://localhost:${PORT}/uploads/products/${file.originalname}`
         }
 
         cb(null,file.originalname);
