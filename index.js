@@ -1,15 +1,10 @@
 import express from "express";
 import multer from "multer";
 
-import * as fs from "fs";
-import* as  https from "https";
-
 
 
 import cors from "cors";
 import mongoose from 'mongoose';
-const key = fs.readFileSync('./key.pem');
-const cert = fs.readFileSync('./cert.pem');
 
 import { registerValidation, loginValidation, productCreateValidation} from './validations.js';
 
@@ -24,7 +19,7 @@ mongoose.connect('mongodb+srv://root:root@cluster0.ctmgvju.mongodb.net/?retryWri
 .then (()=>console.log('DB ok'))
 .catch((err)=> console.log('DB error',err));
 
-const app =express();
+const app = express();
 
 const storage = multer.diskStorage({
     destination: (req,file, cb)=> {
@@ -52,7 +47,6 @@ const upload = multer({ storage });
 app.use(cors())
 
 app.use(express.json());
-const server = https.createServer({key: key, cert: cert }, app);
 
 app.use('/uploads', express.static('uploads'));
 
