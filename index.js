@@ -24,6 +24,7 @@ const app = express();
 const storage = multer.diskStorage({
     destination: (req,file, cb)=> {
         const body = String(req.body.data);
+        console.log('REQ D', body);
         req.body = JSON.parse(body);
 
         if(!req.body?.imageUrl || req.body?.imageUrl !== `http://localhost:${PORT}/uploads/products/${file.originalname}`) {
@@ -31,8 +32,7 @@ const storage = multer.diskStorage({
         }
     },
     filename:(req, file,cb)=> {
-        const body = String(req.body.data);
-        req.body = JSON.parse(body);
+        console.log('REQ F', req.body.data);
 
         if(req.body?.imageUrl !== `http://localhost:${PORT}/uploads/products/${file.originalname}`) {
             req.body.imageUrl = `http://localhost:${PORT}/uploads/products/${file.originalname}`
