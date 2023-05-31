@@ -51,6 +51,7 @@ export const create = async (req, res)=>{
         const doc = new ProductModel({
            title: req.body.title,
            text: req.body.text,
+           price: req.body.price,
            imageUrl: req.body.imageUrl,
            tags: req.body.tags,
         });
@@ -90,6 +91,7 @@ export const remove = async (req, res) => {
 
 };
 export const update = async (req, res) => {
+    const textData = JSON.parse(req.body.data);
     try {
         const productId = req.params.id;
         const result = await ProductModel.findOneAndUpdate(
@@ -97,13 +99,13 @@ export const update = async (req, res) => {
             _id: productId ,
             },
             {
-                title: req.body.title,
-                text: req.body.text,
+                title: textData.title,
+                text: textData.text,
+                price: textData.price,
                 imageUrl: req.body.imageUrl,
-                tags: req.body.tags,
+                tags: textData.tags,
             },
         );
-
         res.json({
             success: true,
             data: result,

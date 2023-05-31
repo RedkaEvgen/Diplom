@@ -25,7 +25,7 @@ const storage = multer.diskStorage({
     destination: (req,file, cb)=> {
         const body = String(req.body.data);
         req.body = JSON.parse(body);
-
+        console.log("IMAGE LOAD");
         if(!req.body?.imageUrl || req.body?.imageUrl !== `http://localhost:${PORT}/uploads/products/${file.originalname}`) {
             cb(null,'uploads/products');
         }
@@ -51,18 +51,12 @@ app.post('/auth/login',loginValidation, UserController.login);
 app.post('/auth/register',registerValidation,UserController.register);
 app.get('/auth/me', checkAuth, UserController.getMe);
 
-app.post('/upload',upload.single('image'),(req,res)=>{
-    res.json({
-        url: `/uploads/${req.file.originalname}`,
-    });
-})
-
 app.get('/products', ProductsController.getAll); // For All Product
 app.get('/products/:id', ProductsController.getOne); // For One product
 // For admin
 app.post('/products' , upload.any(), productCreateValidation,  ProductsController.create);
 app.delete('/products/:id', checkAuth , ProductsController.remove);
-app.patch('/products/:id', upload.any(), ProductsController.update);
+app.post('/products/:id', upload.any(), ProductsController.update);
 
 app.patch('/user/cart', checkAuth, CartController.add);
 app.delete('/user/cart', checkAuth, CartController.remove);
