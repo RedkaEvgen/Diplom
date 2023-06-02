@@ -58,8 +58,9 @@ app.post('/products' , upload.any(), productCreateValidation,  ProductsControlle
 app.delete('/products/:id', checkAuth , ProductsController.remove);
 app.post('/products/:id', upload.any(), ProductsController.update);
 
-app.patch('/user/cart', checkAuth, CartController.add);
-app.delete('/user/cart', checkAuth, CartController.remove);
+app.post('/user/cart', checkAuth, CartController.add);
+app.patch('/user/cart', checkAuth, CartController.update);
+app.patch('/user/cart/deleteProduct', checkAuth, CartController.remove);
 
 app.listen(PORT,(err)=>{
     if(err){
